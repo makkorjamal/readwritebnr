@@ -40,7 +40,7 @@ def read_bnr(filename):
             raise IOError("fseek to {} failed".format(file_offset))
         libc.fread.argtypes = (c.c_void_p, c.c_size_t, c.c_size_t, c.c_void_p)
         libc.fread.restype = c.c_size_t
-        libc.fread(c.addressof(data), length, 1, f)
+        libc.fread(c.addressof(data),c.sizeof(c.c_float),length, f)
         bnrdata.DATA = data # Add data field after knowing the length
         libc.fclose(f)
     except Exception as e:
@@ -61,7 +61,7 @@ def write_bnr(filename, bnrdata):
         raise IOError("fseek to {} failed".format(file_offset))
     libc.fwrite.argtypes = (c.c_void_p, c.c_size_t, c.c_size_t, c.c_void_p)
     libc.fwrite.restype = c.c_size_t
-    libc.fwrite(c.addressof(data), bnrdata.LENGTH, 1, f)
+    libc.fwrite(c.addressof(data),c.sizeof(c.c_float), bnrdata.LENGTH, f)
     libc.fclose(f)
     print('File written successfully.')
 
